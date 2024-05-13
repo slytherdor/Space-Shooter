@@ -1,5 +1,6 @@
 import pygame
 
+
 class Warrior:
 
     def __init__(self, x, y):
@@ -8,7 +9,7 @@ class Warrior:
         self.image = pygame.image.load("warrior.png")
         self.image_size = self.image.get_size()
         self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])
-        self.delta = .3
+        self.delta = 5
         self.right = True
 
 
