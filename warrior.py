@@ -1,6 +1,4 @@
 import pygame
-
-
 class Warrior:
 
     def __init__(self, x, y):
@@ -9,7 +7,7 @@ class Warrior:
         self.image = pygame.image.load("warrior.png")
         self.image_size = self.image.get_size()
         self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])
-        self.delta = 5
+        self.delta = 2
         self.right = True
 
 
@@ -29,7 +27,6 @@ class Warrior:
         if direction == "left" and self.right == True:
             self.image = pygame.transform.flip(self.image, True, False)
             self.right = False
-
         if direction == "right" and self.right == False:
             self.image = pygame.transform.flip(self.image, True, False)
             self.right = True
