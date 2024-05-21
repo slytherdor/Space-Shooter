@@ -26,12 +26,10 @@ class Warrior:
             self.y = self.y - self.delta
         self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])
         if direction == "left" and self.right == True:
-            self.x = self.x + self.delta
-            self.image = pygame.transform.flip(self.image, True, False)
+            self.x = self.x - self.delta
             self.right = False
         if direction == "right" and self.right == False:
-            self.x = self.x - self.delta
-            self.image = pygame.transform.flip(self.image, True, False)
+            self.x = self.x + self.delta
             self.right = True
 
 
