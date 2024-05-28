@@ -12,10 +12,11 @@ my_font = pygame.font.SysFont('Consolas', 15)
 pygame.display.set_caption("NPC Battle!")
 
 # set up variables for the display
-SCREEN_HEIGHT = 1000
+SCREEN_HEIGHT = 700
 SCREEN_WIDTH = 1400
 size = (SCREEN_WIDTH, SCREEN_HEIGHT)
 screen = pygame.display.set_mode(size)
+bg = pygame.image.load("Grass.jpg")
 
 name = "Collect coins as fast as you can!"
 how_to_move = "Use WASD or Arrow Keys to move."
@@ -40,6 +41,8 @@ ghost = Ghost(1,1)
 rand_rk = Rock(random.randint(0, 500), random.randint(10,340))
 start_time = time.time()
 
+lives = 5
+
 # The loop will carry on until the user exits the game (e.g. clicks the close button).
 run = True
 win = False
@@ -50,7 +53,6 @@ wait = True
 
 # -------- Main Program Loop -----------
 while run:
-
     if start and check:
         start_time = time.time()
         check = False
@@ -73,17 +75,21 @@ while run:
         current_time -= start_time
         current_time = round(current_time, 2)
 
+    if (win == False and lose_by_time == False) and start == True:
+        current_time = time.time()
+        current_time -= start_time
+        current_time = round(current_time, 2)
+
     if start:
         lose_time = round(10 - current_time, 2)
         display_time = my_font.render("Time remaining: " + str(lose_time) + "s", True, (255, 255, 255))
         if lose_time == 0:
             lose_by_time = True
 
-
     if w.rect.colliderect(rk.rect):
-        rk.set_location(random.randint(10, 1200), random.randint(10, 800))
+        rk.set_location(random.randint(10, 1200), random.randint(10, 600))
     if w.rect.colliderect(ghost.rect):
-        ghost.set_location(random.randint(10, 1200), random.randint(10, 800))
+        ghost.set_location(random.randint(10, 1200), random.randint(10, 600))
     if start:
         if current_time % 2 == 0 and wait:
             rk.set_location(random.randint(10, 1200), random.randint(10, 800))
@@ -92,17 +98,15 @@ while run:
         if (current_time * 100) % 100 == 99:
             wait = True
 
-
     # --- Main event loop
     for event in pygame.event.get():
-        if current_time == 0:
-
         if event.type == pygame.QUIT:  #
             run = False
 
     screen.fill((r, g, b))
 
     if start:
+        screen.blit(bg,(0,0))
         screen.blit(w.image, w.rect)
         screen.blit(rk.image, rk.rect)
         screen.blit(ghost.image, ghost.rect)
