@@ -16,7 +16,12 @@ SCREEN_HEIGHT = 700
 SCREEN_WIDTH = 1400
 size = (SCREEN_WIDTH, SCREEN_HEIGHT)
 screen = pygame.display.set_mode(size)
+
 bg = pygame.image.load("Grass.jpg")
+hrt1 = pygame.image.load("heart.png")
+hrt2 = pygame.image.load("heart.png")
+hrt3 = pygame.image.load("heart.png")
+
 
 name = "Collect coins as fast as you can!"
 how_to_move = "Use WASD or Arrow Keys to move."
@@ -38,6 +43,7 @@ display_name = my_font.render(name, True, (255, 255, 255))
 w = Warrior(40, 60)
 rk = Rock(1,1)
 ghost = Ghost(1,1)
+
 rand_rk = Rock(random.randint(0, 500), random.randint(10,340))
 start_time = time.time()
 
@@ -87,13 +93,13 @@ while run:
             lose_by_time = True
 
     if w.rect.colliderect(rk.rect):
-        rk.set_location(random.randint(10, 1200), random.randint(10, 600))
+        rk.set_location(random.randint(10, 1200), random.randint(10, 550))
     if w.rect.colliderect(ghost.rect):
-        ghost.set_location(random.randint(10, 1200), random.randint(10, 600))
+        ghost.set_location(random.randint(10, 1200), random.randint(10, 550))
     if start:
         if current_time % 2 == 0 and wait:
-            rk.set_location(random.randint(10, 1200), random.randint(10, 800))
-            ghost.set_location(random.randint(10, 1200), random.randint(10, 800))
+            rk.set_location(random.randint(10, 1200), random.randint(10, 550))
+            ghost.set_location(random.randint(10, 1200), random.randint(10, 550))
             wait = False
         if (current_time * 100) % 100 == 99:
             wait = True
@@ -107,11 +113,14 @@ while run:
 
     if start:
         screen.blit(bg,(0,0))
+        screen.blit(hrt1,(5,35))
+        screen.blit(hrt2,(25,35))
+        screen.blit(hrt3,(45,35))
         screen.blit(w.image, w.rect)
         screen.blit(rk.image, rk.rect)
         screen.blit(ghost.image, ghost.rect)
-        screen.blit(display_name, (0, 0))
-        screen.blit(display_time, (0, 15))
+        screen.blit(display_name, (5, 0))
+        screen.blit(display_time, (5, 15))
     else:
         screen.blit(display_message, (130, 170))
         screen.blit(display_message2, (155, 150))
