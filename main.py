@@ -4,6 +4,7 @@ import time
 from warrior import Warrior
 from rock import Rock
 from ghost import Ghost
+from target import Target
 
 # set up pygame modules
 pygame.init()
@@ -22,12 +23,13 @@ hrt1 = pygame.image.load("heart.png")
 hrt2 = pygame.image.load("heart.png")
 hrt3 = pygame.image.load("heart.png")
 
-
 name = "Collect coins as fast as you can!"
 how_to_move = "Use WASD or Arrow Keys to move."
 message = "Welcome to NPC Battle!"
 message2 = "To start, please click on the play button below:"
 message3 = "Manual: 1) WASD to move 2) Press e to end game"
+
+win_message1 = ""
 
 warrior_score = 0
 r = 50
@@ -43,11 +45,14 @@ display_name = my_font.render(name, True, (255, 255, 255))
 w = Warrior(40, 60)
 rk = Rock(1,1)
 ghost = Ghost(1,1)
+trgt = Target(1,1)
 
 rand_rk = Rock(random.randint(0, 500), random.randint(10,340))
 start_time = time.time()
 
-lives = 5
+lives = 3
+
+trgt.set_location(random.randint(10, 1200), random.randint(10, 550))
 
 # The loop will carry on until the user exits the game (e.g. clicks the close button).
 run = True
@@ -76,6 +81,9 @@ while run:
         w.move_direction("up")
         start = True
 
+    rk.set_location(random.randint(10, 1300), random.randint(10, 575))
+    ghost.set_location(random.randint(10, 1300), random.randint(10, 575))
+
     if (win == False and lose_by_time == False) and start == True:
         current_time = time.time()
         current_time -= start_time
@@ -92,17 +100,12 @@ while run:
         if lose_time == 0:
             lose_by_time = True
 
-    if w.rect.colliderect(rk.rect):
+    if w.rect.colliderect(rk.rect) or rk.rect.colliderect(trgt.rect):
         rk.set_location(random.randint(10, 1200), random.randint(10, 550))
-    if w.rect.colliderect(ghost.rect):
+    if w.rect.colliderect(ghost.rect) or ghost.rect.colliderect(trgt.rect):
         ghost.set_location(random.randint(10, 1200), random.randint(10, 550))
-    if start:
-        if current_time % 2 == 0 and wait:
-            rk.set_location(random.randint(10, 1200), random.randint(10, 550))
-            ghost.set_location(random.randint(10, 1200), random.randint(10, 550))
-            wait = False
-        if (current_time * 100) % 100 == 99:
-            wait = True
+    if w.rect.colliderect(rk.rect) or w.rect.colliderect(ghost.rect):
+
 
     # --- Main event loop
     for event in pygame.event.get():
@@ -119,6 +122,7 @@ while run:
         screen.blit(w.image, w.rect)
         screen.blit(rk.image, rk.rect)
         screen.blit(ghost.image, ghost.rect)
+        screen.blit(trgt.image, trgt.rect)
         screen.blit(display_name, (5, 0))
         screen.blit(display_time, (5, 15))
     else:
