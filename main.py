@@ -6,13 +6,11 @@ from rock import Rock
 from ghost import Ghost
 from target import Target
 
-# set up pygame modules
 pygame.init()
 pygame.font.init()
 my_font = pygame.font.SysFont('Consolas', 15)
 pygame.display.set_caption("NPC Battle!")
 
-# set up variables for the display
 SCREEN_HEIGHT = 700
 SCREEN_WIDTH = 1400
 size = (SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -104,10 +102,10 @@ while run:
         rk.set_location(random.randint(10, 1200), random.randint(10, 550))
     if w.rect.colliderect(ghost.rect) or ghost.rect.colliderect(trgt.rect):
         ghost.set_location(random.randint(10, 1200), random.randint(10, 550))
-    if w.rect.colliderect(rk.rect) or w.rect.colliderect(ghost.rect):
+    while lives != 0:
+        if w.rect.colliderect(rk.rect) or w.rect.colliderect(ghost.rect):
+            lives -= 1
 
-
-    # --- Main event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  #
             run = False
@@ -116,9 +114,17 @@ while run:
 
     if start:
         screen.blit(bg,(0,0))
-        screen.blit(hrt1,(5,35))
-        screen.blit(hrt2,(25,35))
-        screen.blit(hrt3,(45,35))
+        while lives == 3:
+            screen.blit(hrt1,(5,35))
+            screen.blit(hrt2,(25,35))
+            screen.blit(hrt3,(45,35))
+            if lives == 2:
+                screen.blit(hrt1, (5, 35))
+                screen.blit(hrt2, (25, 35))
+            if lives == 1:
+                screen.blit(hrt1, (5, 35))
+            else:
+                print()
         screen.blit(w.image, w.rect)
         screen.blit(rk.image, rk.rect)
         screen.blit(ghost.image, ghost.rect)
