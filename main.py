@@ -79,9 +79,6 @@ while run:
         w.move_direction("up")
         start = True
 
-    rk.set_location(random.randint(10, 1300), random.randint(10, 575))
-    ghost.set_location(random.randint(10, 1300), random.randint(10, 575))
-
     if (win == False and lose_by_time == False) and start == True:
         current_time = time.time()
         current_time -= start_time
@@ -98,39 +95,43 @@ while run:
         if lose_time == 0:
             lose_by_time = True
 
-    if w.rect.colliderect(rk.rect) or rk.rect.colliderect(trgt.rect):
-        rk.set_location(random.randint(10, 1200), random.randint(10, 550))
-    if w.rect.colliderect(ghost.rect) or ghost.rect.colliderect(trgt.rect):
-        ghost.set_location(random.randint(10, 1200), random.randint(10, 550))
-    while lives != 0:
-        if w.rect.colliderect(rk.rect) or w.rect.colliderect(ghost.rect):
+    if start == True:
+        if w.rect.colliderect(rk.rect) or rk.rect.colliderect(trgt.rect):
+            rk.set_location(random.randint(10, 1200), random.randint(10, 550))
             lives -= 1
+        if w.rect.colliderect(ghost.rect) or ghost.rect.colliderect(trgt.rect):
+            ghost.set_location(random.randint(10, 1200), random.randint(10, 550))
+            lives -= 1
+        if current_time % 1 == 0 and wait:
+            rk.set_location(random.randint(10, 1300), random.randint(10, 575))
+            ghost.set_location(random.randint(10, 1300), random.randint(10, 575))
+            wait = False
+        if (current_time * 100) % 100 == 99:
+            wait = True
 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:  #
+        if event.type == pygame.QUIT or keys[pygame.K_e] == pygame.QUIT:  #
             run = False
 
     screen.fill((r, g, b))
 
     if start:
         screen.blit(bg,(0,0))
-        while lives == 3:
-            screen.blit(hrt1,(5,35))
-            screen.blit(hrt2,(25,35))
-            screen.blit(hrt3,(45,35))
-            if lives == 2:
-                screen.blit(hrt1, (5, 35))
-                screen.blit(hrt2, (25, 35))
-            if lives == 1:
-                screen.blit(hrt1, (5, 35))
-            else:
-                print()
         screen.blit(w.image, w.rect)
         screen.blit(rk.image, rk.rect)
         screen.blit(ghost.image, ghost.rect)
         screen.blit(trgt.image, trgt.rect)
         screen.blit(display_name, (5, 0))
         screen.blit(display_time, (5, 15))
+        if lives == 3:
+            screen.blit(hrt1, (5, 35))
+            screen.blit(hrt2, (25, 35))
+            screen.blit(hrt3, (45, 35))
+        if lives == 2:
+            screen.blit(hrt1, (5, 35))
+            screen.blit(hrt2, (25, 35))
+        if lives == 1:
+            screen.blit(hrt1, (5, 35))
     else:
         screen.blit(display_message, (130, 170))
         screen.blit(display_message2, (155, 150))
