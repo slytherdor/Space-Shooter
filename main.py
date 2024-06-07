@@ -1,3 +1,4 @@
+
 import pygame
 import random
 import time
@@ -17,6 +18,7 @@ size = (SCREEN_WIDTH, SCREEN_HEIGHT)
 screen = pygame.display.set_mode(size)
 
 bg = pygame.image.load("Grass.jpg")
+ending_bg = pygame.image.load("ending screen.png")
 hrt1 = pygame.image.load("heart.png")
 hrt2 = pygame.image.load("heart.png")
 hrt3 = pygame.image.load("heart.png")
@@ -26,6 +28,7 @@ how_to_move = "Use WASD or Arrow Keys to move."
 message = "Welcome to NPC Battle!"
 message2 = "To start, please click on the play button below:"
 message3 = "Manual: 1) WASD to move 2) Press e to end game"
+winning_msge = "You Win!"
 
 win_message1 = ""
 
@@ -39,6 +42,7 @@ display_message = my_font.render(message, True, (255, 255, 255))
 display_message2 = my_font.render(message2, True, (255, 255, 255))
 display_message3 = my_font.render(message3, True, (255, 255, 255))
 display_name = my_font.render(name, True, (255, 255, 255))
+display_win_msge = my_font.render(winning_msge, True, (255, 255, 255))
 
 w = Warrior(40, 60)
 rk = Rock(1,1)
@@ -48,7 +52,7 @@ trgt = Target(1,1)
 rand_rk = Rock(random.randint(0, 500), random.randint(10,340))
 start_time = time.time()
 
-lives = 3
+lives = 4
 
 trgt.set_location(random.randint(10, 1200), random.randint(10, 550))
 
@@ -102,12 +106,16 @@ while run:
         if w.rect.colliderect(ghost.rect) or ghost.rect.colliderect(trgt.rect):
             ghost.set_location(random.randint(10, 1200), random.randint(10, 550))
             lives -= 1
-        if current_time % 1 == 0 and wait:
+        if current_time % 2 == 0 and wait:
             rk.set_location(random.randint(10, 1300), random.randint(10, 575))
             ghost.set_location(random.randint(10, 1300), random.randint(10, 575))
             wait = False
         if (current_time * 100) % 100 == 99:
             wait = True
+
+    if win == True:
+        my_font = pygame.font.SysFont('Consolas', 50)
+        display_win_msge = my_font.render(winning_msge, True, (255, 255, 255))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT or keys[pygame.K_e] == pygame.QUIT:  #
@@ -132,6 +140,8 @@ while run:
             screen.blit(hrt2, (25, 35))
         if lives == 1:
             screen.blit(hrt1, (5, 35))
+        if w.rect.colliderect(trgt.rect):
+            screen.blit(ending_bg, (0,0))
     else:
         screen.blit(display_message, (130, 170))
         screen.blit(display_message2, (155, 150))
